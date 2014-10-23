@@ -22,9 +22,14 @@ def svnignore_to_gitignore(path, data):
     dirs = data.split('\n\n')
 
     for dir in dirs:
-        subdir = dir.replace(' - ','\n').split('\n')
+        subdir = dir.replace(' - ','\n').replace(path,'').replace(path[:-1],'.').split('\n')
+        print subdir
         if subdir[0] == '.':
             for i in subdir[1:]:
+                f.write(i + '\n')
+        elif subdir[0] == path:
+            for i in subdir[1:]:
+                print i
                 f.write(i + '\n')
         elif subdir[0] == '':
             continue
@@ -35,7 +40,6 @@ def svnignore_to_gitignore(path, data):
 
 
 def main():
-
     if len(sys.argv) < 2:
         print 'Usage: %s <repo path>' % sys.argv[0]
         sys.exit()
